@@ -18,10 +18,12 @@ impl MarkdownParser {
         let mut result = String::new();
 
         loop {
+            self.handle_whitespace();
             if self.is_end_of_line() {
                 break;
             } else {
                 result.push_str(&self.parse_line());
+                result.push_str(&self.create_break());
             }
         }
 
@@ -47,6 +49,10 @@ impl MarkdownParser {
         self.input[self.position..].chars().next().unwrap()
     }
 
+    fn create_break(&self) -> String {
+        String::from("<br />")
+    }
+
     fn create_title(&mut self) -> String {
         let pound = self.consume_while(|c| c == '#');
         self.handle_whitespace();
@@ -68,6 +74,7 @@ impl MarkdownParser {
         F: Fn(char) -> bool,
     {
         let mut result = String::new();
+
         while !self.is_end_of_line() && func(self.get_next_character()) {
             result.push(self.process_char());
         }
