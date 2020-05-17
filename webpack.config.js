@@ -17,7 +17,7 @@ module.exports = {
     contentBase: dist,
   },
   plugins: [
-    new CopyPlugin([path.resolve(__dirname, "docs")]),
+    new CopyPlugin([path.resolve(__dirname, "static")]),
 
     new WasmPackPlugin({
       crateDirectory: __dirname,
