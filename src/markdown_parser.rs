@@ -29,8 +29,12 @@ impl MarkdownParser {
     }
 
     fn parse_line(&mut self) -> String {
-        match self.get_next_character() {
-            '#' => String::new(),
+        let next_char = self.get_next_character();
+
+        console::log_2(&"Next CHAR: ".into(), &next_char.to_string().into());
+
+        match next_char {
+            '#' => self.create_title(),
             _ => self.parse_text(),
         }
     }
@@ -43,8 +47,20 @@ impl MarkdownParser {
         self.input[self.position..].chars().next().unwrap()
     }
 
+    fn create_title(&mut self) -> String {
+        let pound = self.consume_while(|c| c == '#');
+        self.handle_whitespace();
+        let text = self.parse_text();
+
+        create_html_element(format!("h{}", pound.len()), text)
+    }
+
     fn parse_text(&mut self) -> String {
         self.consume_while(|c| !is_newline(c))
+    }
+
+    fn handle_whitespace(&mut self) -> String {
+        self.consume_while(char::is_whitespace)
     }
 
     fn consume_while<F>(&mut self, func: F) -> String
@@ -70,6 +86,10 @@ impl MarkdownParser {
         self.position += next_position;
         current_char
     }
+}
+
+fn create_html_element(tag_name: String, text: String) -> String {
+    format!("<{}>{}</{}>", tag_name, text, tag_name)
 }
 
 fn is_newline(c: char) -> bool {

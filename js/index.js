@@ -5,6 +5,7 @@ wasm.then((module) => {
 
   button.addEventListener("click", () => {
     const input = document.getElementById("markdown");
-    module.parse_input(input.value);
+    const result = module.parse_input(input.value);
+    console.log("FINAL RESULT: ", result);
   });
 });
