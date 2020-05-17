@@ -4,9 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My Rust + Webpack project!</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
-  <textarea id="markdown"></textarea>
-  <button id="parse">Parse Markdown</button>
+  <div class="container">
+    <div class="markdown">
+      <textarea id="markdown" rows="50"></textarea>
+      <button id="parse">Parse Markdown</button>
+    </div>
+    <div id="output" class="output"></div>
+  </div>
   <body>
     <script src="index.js"></script>
   </body>
