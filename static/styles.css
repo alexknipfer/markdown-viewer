@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+}
+
+.markdown {
+  width: 50%;
+}
+
+.output {
+  padding: 0 20px;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+}
