@@ -2,7 +2,7 @@
   "author": "You <you@example.com>",
   "name": "rust-webpack-template",
   "version": "0.1.0",
-  "homepage": "https://alexknipfer.github.io/markdown-viewer",
+  "homepage": "http://alexknipfer.github.io/markdown-viewer",
   "scripts": {
     "predeploy": "rimraf dist pkg && webpack",
     "deploy": "gh-pages -d dist",
