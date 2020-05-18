@@ -37,6 +37,7 @@ impl MarkdownParser {
 
         match next_char {
             '#' => self.create_title(),
+            '*' => self.parse_italics_or_bold(),
             _ => self.parse_text(),
         }
     }
@@ -61,8 +62,31 @@ impl MarkdownParser {
         create_html_element(format!("h{}", pound.len()), text)
     }
 
+    fn parse_italics_or_bold(&mut self) -> String {
+        let starting_position = self.position;
+        let prepended_asterisks = self.consume_while(|c| c == '*');
+
+        let text = self.parse_text_until_delimiter('*');
+
+        let appended_asterisks = self.consume_while(|c| c == '*');
+
+        if prepended_asterisks.len() == 1 && appended_asterisks.len() == 1 {
+            create_html_element(String::from("i"), text)
+        } else if prepended_asterisks.len() == 2 && appended_asterisks.len() == 2 {
+            console::log_1(&"TODO: Handle bold".into());
+            String::new()
+        } else {
+            let substring = &self.input[starting_position..self.position];
+            String::from(substring)
+        }
+    }
+
     fn parse_text(&mut self) -> String {
         self.consume_while(|c| !is_newline(c))
+    }
+
+    fn parse_text_until_delimiter(&mut self, delimiter: char) -> String {
+        self.consume_while(|c| !is_newline(c) && c != delimiter)
     }
 
     fn handle_whitespace(&mut self) -> String {
@@ -86,10 +110,6 @@ impl MarkdownParser {
         let mut iter = self.input[self.position..].char_indices();
         let (_, current_char) = iter.next().unwrap();
         let (next_position, _) = iter.next().unwrap_or((1, ' '));
-        console::log_2(
-            &"Current character: ".into(),
-            &current_char.to_string().into(),
-        );
         self.position += next_position;
         current_char
     }
